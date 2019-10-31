@@ -15,13 +15,21 @@ struct _c {
 
 Colecao* cria_colecao(int estrutura_id) 
 {
-    // Implementar
-    return NULL;
+    Colecao *c;
+    c = (Colecao*) malloc(sizeof(Colecao));
+    c->estrutura_id = estrutura_id;
+    c->inicio = NULL;
+    return c;
 }
 
 No* cria_no(int valor)
 {
-    // Implementar
+    No *no;
+    no = (No*) malloc(sizeof(No));
+    no->valor = valor;
+    no->altura = 0;
+    no->dir = NULL;
+    no->esq = NULL;
     return NULL;
 }
 
