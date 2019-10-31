@@ -35,8 +35,31 @@ No* cria_no(int valor)
 
 void adiciona(Colecao* c, int valor)
 {
+    No *no = cria_no(valor);
     int tipo = c->estrutura_id;
     if(tipo == LISTA_ORDENADO){
+        
+        if(c->inicio->valor >= valor){
+            no->dir = c->inicio;
+            c->inicio->esq = no;
+            c->inicio = no;
+            return;
+        }else{
+            No *it;
+            it = c->inicio;
+            while(it->dir){
+                if(it->dir->valor >= valor){
+                    it->dir->esq = no;
+                    no->dir = it->dir;
+                    it->dir = no;
+                    no->esq = it;
+                    return;
+                }
+            }
+            it->dir = no;
+            no->esq = it;
+            return;
+        }
 
     }else if(tipo == LISTA_PRIMEIRO){
 
