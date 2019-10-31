@@ -39,8 +39,23 @@ void adiciona(Colecao* c, int valor)
     if(tipo == LISTA_ORDENADO){
 
     }else if(tipo == LISTA_PRIMEIRO){
+        No* no = cria_no(valor);
+        c->inicio->esq =  no;
+        no->dir = c->inicio;
+        c->inicio = no;
+        c->inicio->esq = NULL;
+        printf("inserido no inicio\n");
 
     }else if(tipo == LISTA_ULTIMO){
+        No* no = cria_no(valor);
+        No* aux = c->inicio;
+        while(aux->dir != NULL) {
+            aux = aux->dir;
+        }
+        aux->dir = no;
+        no->esq = aux;
+        no->dir = NULL;
+        printf("inserido no fim\n");
 
     }else if(tipo ==  ARVORE_BINARIA){
 
