@@ -35,7 +35,20 @@ No* cria_no(int valor)
 
 void adiciona(Colecao* c, int valor)
 {
-    // Implementar
+    int tipo = c->estrutura_id;
+    if(tipo == LISTA_ORDENADO){
+
+    }else if(tipo == LISTA_PRIMEIRO){
+
+    }else if(tipo == LISTA_ULTIMO){
+
+    }else if(tipo ==  ARVORE_BINARIA){
+
+    }else if(tipo == ARVORE_AVL){
+
+    }else{
+        printf("[!] Invalid structure_id @ void adiciona();\n");
+    }
 }
 
 int existe(Colecao* c, int valor)
