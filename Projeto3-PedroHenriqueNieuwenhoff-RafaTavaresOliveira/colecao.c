@@ -67,7 +67,7 @@ void adiciona(Colecao* c, int valor)
         no->dir = c->inicio;
         c->inicio = no;
         c->inicio->esq = NULL;
-        printf("inserido no inicio\n");
+        printf("[¨] Inserido no inicio\n");
 
     }else if(tipo == LISTA_ULTIMO){
         No* no = cria_no(valor);
@@ -78,23 +78,69 @@ void adiciona(Colecao* c, int valor)
         aux->dir = no;
         no->esq = aux;
         no->dir = NULL;
-        printf("inserido no fim\n");
+        printf("[¨] Inserido no fim\n");
 
     }else if(tipo ==  ARVORE_BINARIA){
 
     }else if(tipo == ARVORE_AVL){
 
     }else{
-        printf("[!] Invalid structure_id @ void adiciona();\n");
+        printf("[!] Invalid structure_id @ void adiciona()\n");
     }
 }
 
 int existe(Colecao* c, int valor)
 {
-    // Implementar
-    return 1;
+    int tipo = c->estrutura_id;
+    if(tipo == LISTA_ORDENADO){
+        No *it;
+        it = c->inicio;
+        while(it){
+            if(it->valor == valor){
+                return 1;
+            }
+            if(it->valor>valor){
+               return 0; 
+            }
+            it = it->dir;
+        }
+        return 0;
+    }else if(tipo == LISTA_PRIMEIRO || tipo == LISTA_ULTIMO){
+        No *it;
+        it = c->inicio;
+        while (it){
+            if(it->valor == valor){
+                return 1;
+            }
+        }
+        return 0;
+    }else if(tipo == ARVORE_AVL){
+
+    }else if(tipo == ARVORE_BINARIA){
+
+    }else{
+        printf("[!] Invalid structure_id @ int existe()\n");
+    }
 }
+
 void destroi(Colecao* c)
 {
-    // Implementar
+    int tipo = c->estrutura_id;
+    if(tipo == LISTA_ULTIMO || tipo == LISTA_PRIMEIRO || tipo == LISTA_ORDENADO){
+        No *it = c->inicio;
+        No *last;
+        it = it->dir;
+        while(it){
+            it->esq->dir = NULL;
+            free(it->esq);
+            it->esq = NULL;
+            if(it->dir == NULL) last = it;
+            it = it->dir;
+        }
+        free(last);
+    }else if(){
+
+    }else{
+        printf("[!] Invalid structure_id @ int existe()\n");
+    }
 }
