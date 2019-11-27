@@ -43,9 +43,60 @@ No* cria_no(int valor)
     return NULL;
 }
 
-//Faz as rotações da árvore AVL. Retorna sempre o fator de balanceamento.
-int balancearArvore(Colecao *c , No *it){
-    
+int alturaBalanceamento(No *it){
+    int dir, esq;
+    if(it->dir == NULL){
+        dir = 0;
+    }else{
+        dir=alturaBalanceamento(it->dir)+1;
+    }
+    if(it->esq == NULL){
+        esq = 0;
+    }else{
+        esq=alturaBalanceamento(it->dir)+1;
+    }
+    (dir>esq)?dir:esq;
+}
+
+//Faz as rotações da árvore AVL.
+No *balancearArvore(No *it){
+    if(alturaBalanceamento(it->dir)-alturaBalanceamento(it->esq)>1){
+        if(alturaBalanceamento(it->dir->esq)-alturaBalanceamento(it->dir->dir)>1){
+            No *aux1, *aux2, *aux3;
+            aux1 = it->dir;
+            aux2 = it->dir->esq;
+            aux3 = it->dir->esq->dir;
+            aux2->dir = aux1;
+            aux1->esq = aux3;
+            it->dir = aux2;
+        }
+        No *aux1, *aux2, *aux3;
+        aux1 = it;
+        aux2 = it->dir;
+        aux3 = it->dir->esq;
+        aux1->dir = aux3;
+        aux2->esq = aux1;
+        return aux2;
+    }else if(alturaBalanceamento(it->dir)-alturaBalanceamento(it->esq)< -1){
+        if(alturaBalanceamento(it->dir->dir)-alturaBalanceamento(it->dir->esq)>1){
+            No *aux1, *aux2, *aux3;
+            aux1 = it->esq;
+            aux2 = it->esq->dir;
+            aux3 = it->esq->dir->esq;
+            aux2->esq = aux1;
+            aux1->dir = aux3;
+            it->esq = aux2;
+        }
+        No *aux1, *aux2, *aux3;
+        aux1 = it;
+        aux2 = it->esq;
+        aux3 = it->esq->dir;
+        aux1->esq = aux3;
+        aux2->dir = aux1;
+        return aux2;
+    }else{
+        return it;
+    }
 }
 
 void adiciona(Colecao* c, int valor)
@@ -124,7 +175,7 @@ void adiciona(Colecao* c, int valor)
         }
         printf("[¨] Inserido na árvore\n");
         if(tipo == ARVORE_AVL){
-            balancearArvore(c, c->inicio, NULL);
+            c->inicio=balancearArvore(c->inicio);
             printf("[¨] Arvore balanceada\n");
         }
     }else{
