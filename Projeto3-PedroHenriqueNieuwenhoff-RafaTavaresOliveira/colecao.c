@@ -13,6 +13,16 @@ struct _c {
     int estrutura_id;
 };
 
+//Destroi recursivamente todos os itens da arvore
+void destroiArvore(Colecao *c , No *it){
+    if(it->dir)destroiArvore(c , it->dir);
+    if(it->esq)destroiArvore(c , it->esq);
+    it->esq=NULL;
+    it->dir=NULL;
+    free(it);
+    return;
+}
+
 Colecao* cria_colecao(int estrutura_id) 
 {
     Colecao *c;
@@ -31,6 +41,11 @@ No* cria_no(int valor)
     no->dir = NULL;
     no->esq = NULL;
     return NULL;
+}
+
+//Faz as rotações da árvore AVL. Retorna sempre o fator de balanceamento.
+int balancearArvore(Colecao *c , No *it){
+    
 }
 
 void adiciona(Colecao* c, int valor)
@@ -62,7 +77,6 @@ void adiciona(Colecao* c, int valor)
         }
 
     }else if(tipo == LISTA_PRIMEIRO){
-        No* no = cria_no(valor);
         c->inicio->esq =  no;
         no->dir = c->inicio;
         c->inicio = no;
@@ -70,7 +84,6 @@ void adiciona(Colecao* c, int valor)
         printf("[¨] Inserido no inicio\n");
 
     }else if(tipo == LISTA_ULTIMO){
-        No* no = cria_no(valor);
         No* aux = c->inicio;
         while(aux->dir != NULL) {
             aux = aux->dir;
@@ -80,10 +93,40 @@ void adiciona(Colecao* c, int valor)
         no->dir = NULL;
         printf("[¨] Inserido no fim\n");
 
-    }else if(tipo ==  ARVORE_BINARIA){
-
-    }else if(tipo == ARVORE_AVL){
-
+    }else if(tipo ==  ARVORE_BINARIA || tipo == ARVORE_AVL){
+        if(!(c->inicio)){
+            c->inicio=cria_no(valor);
+            return;
+        }else{
+            int altura = 0;   
+            No* it = c->inicio;
+            while(1){
+                if(valor > it->valor){
+                    if(it->dir){
+                        it=it->dir;
+                        altura++;
+                    }else{
+                        it->dir=no;
+                        it->dir->altura=altura+1;
+                        return;
+                    }
+                }else{
+                    if(it->esq){
+                        it=it->esq;
+                        altura++;
+                    }else{
+                        it->esq=no;
+                        it->esq->altura=altura+1;
+                        return;
+                    }
+                }
+            }
+        }
+        printf("[¨] Inserido na árvore\n");
+        if(tipo == ARVORE_AVL){
+            balancearArvore(c, c->inicio, NULL);
+            printf("[¨] Arvore balanceada\n");
+        }
     }else{
         printf("[!] Invalid structure_id @ void adiciona()\n");
     }
@@ -114,9 +157,19 @@ int existe(Colecao* c, int valor)
             }
         }
         return 0;
-    }else if(tipo == ARVORE_AVL){
-
-    }else if(tipo == ARVORE_BINARIA){
+    }else if(tipo == ARVORE_AVL || tipo == ARVORE_BINARIA){
+        No *it = c->inicio;
+        while(1){
+            if(!it){
+                return 0;
+            }else if(it->valor==valor){
+                return 1;
+            }else if(valor>it->valor){
+                it=it->dir;
+            }else{
+                it=it->esq;
+            }
+        }
 
     }else{
         printf("[!] Invalid structure_id @ int existe()\n");
@@ -138,8 +191,9 @@ void destroi(Colecao* c)
             it = it->dir;
         }
         free(last);
-    }else if(){
-
+    }else if(tipo==ARVORE_BINARIA || tipo==ARVORE_AVL){
+        destroiArvore(c , c->inicio);
+        free(c);
     }else{
         printf("[!] Invalid structure_id @ int existe()\n");
     }
